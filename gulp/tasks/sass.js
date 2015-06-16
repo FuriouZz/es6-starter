@@ -18,12 +18,12 @@ function compile(minify) {
 
   if (minify) options = config.options.dist;
 
-  options.loadPath  = require('node-bourbon').includePaths
+  options.loadPath = require('node-bourbon').includePaths;
 
   return rubySass(config.srcPath, options)
           .on('error', notify.onError(function(error){
               return 'ERROR: ' + error
           }))
           .pipe(sourcemaps.write())
-          .pipe(gulp.dest(config.dstPath))
+          .pipe(gulp.dest(config.dstPath));
 }

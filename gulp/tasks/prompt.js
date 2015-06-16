@@ -18,6 +18,5 @@ gulp.task('prompt', function(){
             }
         ], function(answers) {
             gulp.start(answers['task-selected']);
-        }))
-
+        }));
 });

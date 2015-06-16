@@ -14,7 +14,9 @@ module.exports = {
   }
 
   ,watch: {
-    files: [dstPath+'**/*.html', dstPath+'shaders/**']
+    files: [
+      dstPath+'**/*.{js,css,html,frag,vert}'
+    ]
   }
 
   ,coffee: {
@@ -78,7 +80,7 @@ module.exports = {
 
   ,vendor: {
     scripts: {
-      source:   'vendors.js' 
+      source:   'vendors.js'
       ,dstPath: dstPath+'scripts/'
     }
   }

@@ -7,7 +7,6 @@ var babelify   = require('babelify');
 var watchify   = require('watchify');
 var browserify = require('browserify');
 var notify     = require('gulp-notify');
-var reload     = require('browser-sync').reload;
 var _          = require('lodash');
 var gif        = require('gulp-if');
 var uglify     = require('gulp-uglify');
@@ -50,8 +49,7 @@ function bundle(options){
                 .pipe(source(config.source))
                 .pipe(buffer())
                 .pipe(gif(minify, uglify()))
-                .pipe(gulp.dest(config.dstPath))
-                .pipe(gif(watch, reload({ stream: true })));
+                .pipe(gulp.dest(config.dstPath));
     }
 
     function handleError(error){
