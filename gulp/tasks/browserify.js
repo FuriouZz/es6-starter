@@ -8,7 +8,6 @@ var watchify   = require('watchify');
 var browserify = require('browserify');
 var notify     = require('gulp-notify');
 var _          = require('lodash');
-var gif        = require('gulp-if');
 var uglify     = require('gulp-uglify');
 
 gulp.task('browserify', function(){
@@ -25,37 +24,38 @@ gulp.task('browserify:watch', function(){
 
 function bundle(options){
 
-    var watch = options.watch,
-    minify    = options.minify,
-    b         = null;
+  var watch = options.watch,
+  minify    = options.minify,
+  b         = null;
 
-    if (watch) {
-        _.assign(watchify.args, config.opts);
-        b = watchify(browserify(watchify.args));
-        b.on('update', rebundle);
-    } else {
-        b = browserify(config.opts);
-    }
+  if (watch) {
+    _.assign(watchify.args, config.opts);
+    b = watchify(browserify(watchify.args));
+    b.on('update', rebundle);
+  } else {
+    b = browserify(config.opts);
+  }
 
-    if (minify) {
-        b.transform(babelify.configure(babelCfg.options.dist));
-    } else {
-        b.transform(babelify.configure(babelCfg.options.dev));
-    }
+  if (minify) {
+    b.transform(babelify.configure(babelCfg.options.dist));
+  } else {
+    b.transform(babelify.configure(babelCfg.options.dev));
+  }
 
-    function rebundle(){
-        return b.bundle()
-                .on('error', notify.onError(handleError))
-                .pipe(source(config.source))
-                .pipe(buffer())
-                .pipe(gif(minify, uglify()))
-                .pipe(gulp.dest(config.dstPath));
-    }
+  function rebundle(){
+    var bndl = b.bundle();
+    bndl     = bndl.on('error', notify.onError(handleError));
+    bndl     = bndl.pipe(source(config.source));
+    bndl     = bndl.pipe(buffer());
 
-    function handleError(error){
-        return 'ERROR: ' + error;
-    }
+    if (minify) bndl = bndl.pipe(uglify());
 
-    rebundle();
+    return bndl.pipe(gulp.dest(config.dstPath));
+  }
 
+  function handleError(error){
+      return 'ERROR: ' + error;
+  }
+
+  rebundle();
 }
