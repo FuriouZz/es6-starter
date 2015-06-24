@@ -71,6 +71,8 @@ module.exports = {
     opts: {
       debug: true
       ,entries: [srcPath+'scripts/main.es']
+      ,paths     : [srcPath+'scripts']
+      ,extensions: ['.js', '.es']
     }
     ,modulePath:  srcPath+'scripts/_modules/'
     ,extensions: ['.js']
